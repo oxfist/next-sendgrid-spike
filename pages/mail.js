@@ -1,9 +1,28 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useState } from 'react'
+import useSWR from 'swr'
 
+import { Button } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+const fetcher = (url) => fetch(url).then((res) => res.json())
+
+export default function Mail() {
+  const [shouldSendMail, setShouldSendMail] = useState(false)
+  const { data } = useSWR(shouldSendMail ? '/api/send-mail' : null, fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    refreshWhenOffline: false,
+    refreshWhenHidden: false,
+    refreshInterval: 0,
+  })
+  console.log(data)
+
+  function handleMailSend() {
+    setShouldSendMail(true)
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,9 +32,10 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <h1 className={styles.title}>Correo a través de SendGrid! 📧</h1>
+        <Button onClick={handleMailSend} colorScheme="blue" mt={4}>
+          Enviar correo
+        </Button>
       </main>
 
       <footer className={styles.footer}>
