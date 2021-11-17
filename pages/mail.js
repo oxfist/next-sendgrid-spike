@@ -6,7 +6,7 @@ import useSWR from 'swr'
 import { Button } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 
-const fetcher = (url) => fetch(url).then((res) => res.json())
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 export default function Mail() {
   const [shouldSendMail, setShouldSendMail] = useState(false)
